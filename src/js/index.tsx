@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import Stack from './components/Stack';
 
 // Store import
-import { ReduxTest } from './store/store';
+import { GeneratorStore } from './store/store';
 
 ReactDOM.render(
     <div id="app" className="w-screen">
@@ -20,7 +20,7 @@ ReactDOM.render(
                 <Stack />
             </div>
         </div>
-        <ReduxTest />
+        <GeneratorStore />
     </div>
     ,
     document.getElementById('root')

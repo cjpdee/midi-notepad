@@ -44,31 +44,42 @@ var note = {
 
 */
 
-export class ReduxTest extends React.Component {
+export class GeneratorStore extends React.Component {
     render() {
 
         interface Actions {
             type: string,
             payload?: any
         }
-        const reducer = (state: object, action: Actions) => {
+
+        const reducer = (state: any, action: Actions) => {
             switch (action.type) {
                 default: return state;
-                case "DO_THING": return action.payload
+                case "CREATE_OSCILLATOR": return {
+                    ...state,
+                    oscillators: { ...state.oscillators, [Object.keys(state.oscillators).length + 1]: action.payload.oscillator }
+                }
+                case "UPDATE_OSCILLATOR": return {
+                    ...state,
+                    oscillators: { ...state.oscillators, [action.payload.id]: { ...action.payload.oscillator } }
+                }
             }
         }
 
-        const store = createStore(
+
+        const generators = createStore(
             reducer,
-            { test: 'testValue' },
+            { test: 'testValue', oscillators: { 1: { thing: 'x' } } },
             composeWithDevTools()
         );
 
-        store.subscribe(() => {
-            console.log("state is now " + store.getState());
+        generators.subscribe(() => {
+            console.log("state is now " + generators.getState());
         })
 
-        store.dispatch({ type: "DO_THING", payload: "Reeeeee" })
+        generators.dispatch({ type: "UPDATE_OSCILLATOR", payload: { id: '1', oscillator: { thing: 'y' } } })
+
+        generators.dispatch({ type: "CREATE_OSCILLATOR", payload: { oscillator: { thing: 'z' } } })
 
         return ('')
     }
