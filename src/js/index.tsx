@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom';
 // Components Import
 import Stack from './components/Stack';
 
+// Store import
+import { ReduxTest } from './store/store';
+
 ReactDOM.render(
     <div id="app" className="w-screen">
         <div className="w-64 bg-gray-600 h-screen">
@@ -17,6 +20,7 @@ ReactDOM.render(
                 <Stack />
             </div>
         </div>
+        <ReduxTest />
     </div>
     ,
     document.getElementById('root')

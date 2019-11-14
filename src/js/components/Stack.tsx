@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ModProp from './ModProperty';
 import Oscillator from './Oscillator';
 import Filter from './Filter';
 
@@ -9,7 +8,7 @@ interface StackProps { }
 export default class Stack extends React.Component<StackProps> {
     render() {
         return (
-            <div>
+            <div draggable={true}>
                 <div className="p-1 bg-blue-800 rounded relative z-30">
                     {/* Stack Title */}
                     <span className="flex flex-row justify-between align-center">
