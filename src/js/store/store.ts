@@ -1,6 +1,11 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+
+import { stacksReducer } from '../reducers/stacks';
+import { projectReducer } from '../reducers/project';
+import { patternsReducer } from '../reducers/patterns';
+import { timelineReducer } from '../reducers/timeline';
 /*
 Store layout:
 
@@ -14,7 +19,7 @@ var state = {
         patternLength: 4, // 4 bars
         selectedKey: 'g'
     },
-    generators: {
+    store: {
         oscillators: [],
         sounds: [],
     },
@@ -44,43 +49,42 @@ var note = {
 
 */
 
-export class GeneratorStore extends React.Component {
+interface StoreInterface {
+
+}
+
+export const store = createStore(
+    combineReducers({ project: projectReducer, stacks: stacksReducer, patterns: patternsReducer, timeline: timelineReducer }),
+    {
+        project: { bpm: 120, name: "untitled" },
+        stacks: { "stack1": { oscillators: {}, sounds: {} } },
+        patterns: {},
+        timeline: {}
+    }
+    ,
+    composeWithDevTools()
+)
+
+export default class Store extends React.Component {
     render() {
+        // const store = createStore(
+        //     generatorsReducer,
+        //     { test: 'testValue', oscillators: { 1: { thing: 'x' } } },
+        //     composeWithDevTools()
+        // );
 
-        interface Actions {
-            type: string,
-            payload?: any
-        }
+        // store.subscribe(() => {
+        //     console.log("state is now " + JSON.stringify(store.getState()));
+        // })
+        /*
+        store.dispatch({ type: "UPDATE_OSCILLATOR", payload: { id: 1, oscillator: { thing: 'y' } } })
 
-        const reducer = (state: any, action: Actions) => {
-            switch (action.type) {
-                default: return state;
-                case "CREATE_OSCILLATOR": return {
-                    ...state,
-                    oscillators: { ...state.oscillators, [Object.keys(state.oscillators).length + 1]: action.payload.oscillator }
-                }
-                case "UPDATE_OSCILLATOR": return {
-                    ...state,
-                    oscillators: { ...state.oscillators, [action.payload.id]: { ...action.payload.oscillator } }
-                }
-            }
-        }
+        store.dispatch({ type: "CREATE_OSCILLATOR", payload: { oscillator: { thing: 'z' } } })
 
+        store.dispatch({ type: "DELETE_OSCILLATOR", payload: { id: 1 } })
 
-        const generators = createStore(
-            reducer,
-            { test: 'testValue', oscillators: { 1: { thing: 'x' } } },
-            composeWithDevTools()
-        );
-
-        generators.subscribe(() => {
-            console.log("state is now " + generators.getState());
-        })
-
-        generators.dispatch({ type: "UPDATE_OSCILLATOR", payload: { id: '1', oscillator: { thing: 'y' } } })
-
-        generators.dispatch({ type: "CREATE_OSCILLATOR", payload: { oscillator: { thing: 'z' } } })
-
+        store.dispatch({ type: "CREATE_OSCILLATOR", payload: { oscillator: { thing: "fff" } } })
+        */
         return ('')
     }
 }
