@@ -1,17 +1,17 @@
-import { omit } from 'lodash';
-import { store } from '../store/store';
+import { omit } from "lodash";
+import { store } from "../store/store";
 // import generateId
 
 interface Actions {
-    type: string,
-    payload?: any,
-    stack?: string
+    type: string;
+    payload?: any;
+    stack?: string;
 }
 
 export const stacksReducer = (state: any = {}, action: Actions) => {
     switch (action.type) {
         case "CREATE_OSCILLATOR":
-            const newId: number = Object.keys(state[action.stack].oscillators).length + 1; // TODO: Make id function
+            console.log(state);
 
             return {
                 ...state,
@@ -19,32 +19,33 @@ export const stacksReducer = (state: any = {}, action: Actions) => {
                     ...state[action.stack],
                     oscillators: {
                         ...state[action.stack].oscillators,
-                        [newId]: { ...action.payload }
+                        [action.payload.oscId]: { ...action.payload }
                     }
-                },
-
-            }
+                }
+            };
         case "UPDATE_OSCILLATOR":
+            console.log(action.payload);
+            console.log("this", action.payload.stackId);
             return {
                 ...state,
-                stacks: {
-                    ...state.stacks,
-                    stackId: {
-                        oscillators: { ...state.stacks[action.payload.stack].oscillators, [action.payload.id]: action.payload.oscillator }
-                    },
-                },
-
-            }
+                [action.payload.stackId]: {
+                    oscillators: {
+                        ...state[action.payload.stackId].oscillators,
+                        [action.payload.oscId]: action.payload
+                    }
+                }
+            };
         case "DELETE_OSCILLATOR":
             return {
                 ...state,
                 oscillators: omit(state.oscillators, action.payload.id)
-            }
+            };
 
         // case "ADD_MODULATOR":
         //     // find the target by id
         //     // add the init modulator to it
         //     return{}
-        default: return state;
+        default:
+            return state;
     }
-}
+};
