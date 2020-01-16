@@ -1,23 +1,59 @@
-/**
- * Mono/polyphonic - stop previous osc when new note starts
- * ^ conditional in the player or scheduler
- */
-
 import React from 'react';
 
 import Select from './Select';
 import ModProp from './ModProperty';
-import Filter from './Filter';
+import { Filter, FilterProps } from './Filter';
 
-export default class Oscillator extends React.Component {
+// TODO: import waveforms
+const waveforms = [
+    'sine',
+    'square',
+    'saw',
+    'triangle'
+];
+
+export interface OscillatorProps {
+    name: string,
+    waveform: string,
+    filters: FilterProps[],
+    gain: {
+        value: number,
+        modulator: any
+    }
+}
+
+// Default oscillator patch
+export function init(): OscillatorProps {
+    return {
+        name: 'generateId',
+        waveform: waveforms[0],
+        filters: [],
+        gain: {
+            value: 80,
+            modulator: null
+        }
+    }
+}
+
+export class Oscillator extends React.Component {
+    doThing() {
+        console.log('yes');
+    }
+
+    componentDidMount() {
+        console.log('osc props', this.props)
+    }
+
+
+
     render() {
         return (
-            <div draggable={true}>
-                <div className="w-full bg-gray-200 rounded p-1 mb-1 last:mb-0 relative z-50">
+            <div className="mb-1 last:mb-0">
+                <div className="w-full bg-blue-100 rounded p-1  relative z-50 mb-1 last:mb-0">
                     {/* Select Component */}
-                    <Select />
+                    <Select label="Waveform" options={waveforms} />
                     {/* ModProp Component */}
-                    <ModProp />
+                    <ModProp label="Gain" value={0} />
                 </div>
                 {/* Osc Filters List */}
                 <div className="flex flex-col">

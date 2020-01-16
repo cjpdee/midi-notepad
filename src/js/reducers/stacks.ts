@@ -1,20 +1,26 @@
 import { omit } from 'lodash';
+import { store } from '../store/store';
+// import generateId
 
 interface Actions {
     type: string,
-    payload?: any
+    payload?: any,
+    stack?: string
 }
 
 export const stacksReducer = (state: any = {}, action: Actions) => {
     switch (action.type) {
         case "CREATE_OSCILLATOR":
-            console.log(state)
-            const newId: number = Object.keys(state[action.payload.stack].oscillators).length + 1; // TODO: Make id function
+            const newId: number = Object.keys(state[action.stack].oscillators).length + 1; // TODO: Make id function
+
             return {
                 ...state,
-                [action.payload.stack]: {
-                    ...state[action.payload.stack],
-                    oscillators: { ...state[action.payload.stack].oscillators, [newId]: action.payload.oscillator }
+                [action.stack]: {
+                    ...state[action.stack],
+                    oscillators: {
+                        ...state[action.stack].oscillators,
+                        [newId]: { ...action.payload }
+                    }
                 },
 
             }
@@ -34,6 +40,11 @@ export const stacksReducer = (state: any = {}, action: Actions) => {
                 ...state,
                 oscillators: omit(state.oscillators, action.payload.id)
             }
+
+        // case "ADD_MODULATOR":
+        //     // find the target by id
+        //     // add the init modulator to it
+        //     return{}
         default: return state;
     }
 }

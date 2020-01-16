@@ -1,3 +1,33 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white,  50%)) {
+    // For Google Chrome
+    &::-webkit-scrollbar {
+        width:  $size;
+        height: $size;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: $foreground-color;
+    }
+  
+    &::-webkit-scrollbar-track {
+        background: $background-color;
+    }
+  
+    // For Internet Explorer
+    body {
+      scrollbar-face-color: $foreground-color;
+      scrollbar-track-color: $background-color;
+    }
+  }
+
+.hide-scrollbar {
+    @include scrollbars(5px,grey);
+}
+
+.slider-vertical {
+    -webkit-appearance: slider-vertical;
+}

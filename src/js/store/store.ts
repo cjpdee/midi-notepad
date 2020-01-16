@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
@@ -54,7 +53,12 @@ interface StoreInterface {
 }
 
 export const store = createStore(
-    combineReducers({ project: projectReducer, stacks: stacksReducer, patterns: patternsReducer, timeline: timelineReducer }),
+    combineReducers({
+        project: projectReducer,
+        stacks: stacksReducer,
+        patterns: patternsReducer,
+        timeline: timelineReducer
+    }),
     {
         project: { bpm: 120, name: "untitled" },
         stacks: { "stack1": { oscillators: {}, sounds: {} } },
@@ -64,27 +68,3 @@ export const store = createStore(
     ,
     composeWithDevTools()
 )
-
-export default class Store extends React.Component {
-    render() {
-        // const store = createStore(
-        //     generatorsReducer,
-        //     { test: 'testValue', oscillators: { 1: { thing: 'x' } } },
-        //     composeWithDevTools()
-        // );
-
-        // store.subscribe(() => {
-        //     console.log("state is now " + JSON.stringify(store.getState()));
-        // })
-        /*
-        store.dispatch({ type: "UPDATE_OSCILLATOR", payload: { id: 1, oscillator: { thing: 'y' } } })
-
-        store.dispatch({ type: "CREATE_OSCILLATOR", payload: { oscillator: { thing: 'z' } } })
-
-        store.dispatch({ type: "DELETE_OSCILLATOR", payload: { id: 1 } })
-
-        store.dispatch({ type: "CREATE_OSCILLATOR", payload: { oscillator: { thing: "fff" } } })
-        */
-        return ('')
-    }
-}
