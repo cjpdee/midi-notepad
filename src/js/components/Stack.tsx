@@ -20,10 +20,7 @@ class Stack extends React.Component<StackProps> {
         super(props);
     }
 
-    componentDidUpdate() {
-        console.log("reconcile - update the synth engine");
-        console.log(this.props);
-    }
+    componentDidUpdate() {}
 
     addOscillator() {
         store.dispatch({

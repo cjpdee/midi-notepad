@@ -52772,8 +52772,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+// Components
 const Select_1 = __importDefault(__webpack_require__(/*! ./Select */ "./src/js/components/Select.tsx"));
 const ModProperty_1 = __importDefault(__webpack_require__(/*! ./ModProperty */ "./src/js/components/ModProperty.tsx"));
+// Helpers
+const id_1 = __webpack_require__(/*! ../utils/id */ "./src/js/utils/id.ts");
 const store_1 = __webpack_require__(/*! ../store/store */ "./src/js/store/store.ts");
 // TODO: import waveforms
 const waveforms = ["sine", "square", "saw", "triangle"];
@@ -52787,7 +52790,7 @@ function init(stackId) {
             value: 80,
             modulator: null
         },
-        oscId: "generateId",
+        oscId: id_1.generateId("oscillator", store_1.store.getState()),
         stackId: stackId
     };
 }
@@ -52797,7 +52800,7 @@ class Oscillator extends react_1.default.Component {
         super(props);
     }
     componentDidMount() {
-        console.log("osc props", this.props);
+        // console.log("osc props", this.props);
     }
     render() {
         return (react_1.default.createElement("div", { className: "mb-1 last:mb-0" },
@@ -52809,7 +52812,7 @@ class Oscillator extends react_1.default.Component {
                 react_1.default.createElement(ModProperty_1.default, { label: "Gain", value: 0 }))));
     }
     updateOscillator(props) {
-        console.log("UPDATE_OSCILLATOR props", props);
+        // console.log("UPDATE_OSCILLATOR props", props);
         store_1.store.dispatch({
             type: "UPDATE_OSCILLATOR",
             payload: props
@@ -52934,10 +52937,7 @@ class Stack extends react_1.default.Component {
     constructor(props) {
         super(props);
     }
-    componentDidUpdate() {
-        console.log("reconcile - update the synth engine");
-        console.log(this.props);
-    }
+    componentDidUpdate() { }
     addOscillator() {
         store_1.store.dispatch({
             type: "CREATE_OSCILLATOR",
@@ -53151,10 +53151,75 @@ exports.store = redux_1.createStore(redux_1.combineReducers({
     timeline: timeline_1.timelineReducer
 }), {
     project: { bpm: 120, name: "untitled" },
-    stacks: { "stack1": { oscillators: {}, sounds: {} } },
+    stacks: {
+        stack1: { oscillators: {}, sounds: {} },
+        stack2: { oscillators: {}, sounds: {} }
+    },
     patterns: {},
     timeline: {}
 }, redux_devtools_extension_1.composeWithDevTools());
+
+
+/***/ }),
+
+/***/ "./src/js/utils/id.ts":
+/*!****************************!*\
+  !*** ./src/js/utils/id.ts ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function findById(id, type, state) {
+    let entryPoint = undefined;
+    switch (type) {
+        case "stack":
+        case "oscillator":
+        case "filter":
+            entryPoint = "stacks";
+            break;
+        case "pattern":
+            entryPoint = "patterns";
+            break;
+    }
+    function objectSearch(needle, haystack) {
+        console.log("current haystack:", haystack);
+        for (const item in haystack) {
+            console.log("iterating", item, needle);
+            if (item === needle) {
+                return false;
+            }
+            else {
+                if (Object.keys(haystack[item]).length === 1 ||
+                    !Object.keys(haystack[item])) {
+                    console.log("could not be found");
+                    return id;
+                }
+                else {
+                    console.log("are there more keys? ", Object.keys(haystack[item]).length);
+                    objectSearch(needle, haystack[item]);
+                }
+            }
+        }
+    }
+    return objectSearch(id, state[entryPoint]);
+}
+exports.findById = findById;
+function randomId() {
+    // return "lol";
+    return Math.floor(Math.random() * 10000000).toString(16);
+}
+function generateId(type, state) {
+    let id = randomId();
+    if (findById(id, type, state)) {
+        return generateId(type, state);
+    }
+    else
+        return id;
+}
+exports.generateId = generateId;
 
 
 /***/ }),

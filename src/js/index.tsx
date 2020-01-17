@@ -39,6 +39,7 @@ export class App extends React.Component {
                         </div>
                         {/* Stacks */}
                         <div className="flex flex-col h-100 p-1">
+                            {/* map stacks to the sidebar */}
                             {Object.keys(store.getState().stacks).map(key => {
                                 let stack = store.getState().stacks[key];
 

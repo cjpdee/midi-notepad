@@ -1,6 +1,5 @@
 import { omit } from "lodash";
 import { store } from "../store/store";
-// import generateId
 
 interface Actions {
     type: string;

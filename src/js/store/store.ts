@@ -1,10 +1,10 @@
-import { createStore, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore, combineReducers } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 
-import { stacksReducer } from '../reducers/stacks';
-import { projectReducer } from '../reducers/project';
-import { patternsReducer } from '../reducers/patterns';
-import { timelineReducer } from '../reducers/timeline';
+import { stacksReducer } from "../reducers/stacks";
+import { projectReducer } from "../reducers/project";
+import { patternsReducer } from "../reducers/patterns";
+import { timelineReducer } from "../reducers/timeline";
 /*
 Store layout:
 
@@ -48,9 +48,7 @@ var note = {
 
 */
 
-interface StoreInterface {
-
-}
+interface StoreInterface {}
 
 export const store = createStore(
     combineReducers({
@@ -61,10 +59,12 @@ export const store = createStore(
     }),
     {
         project: { bpm: 120, name: "untitled" },
-        stacks: { "stack1": { oscillators: {}, sounds: {} } },
+        stacks: {
+            stack1: { oscillators: {}, sounds: {} },
+            stack2: { oscillators: {}, sounds: {} }
+        },
         patterns: {},
         timeline: {}
-    }
-    ,
+    },
     composeWithDevTools()
-)
+);

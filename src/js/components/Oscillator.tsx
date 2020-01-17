@@ -1,8 +1,12 @@
 import React from "react";
 
+// Components
 import Select from "./Select";
 import ModProp from "./ModProperty";
 import { Filter, FilterProps } from "./Filter";
+
+// Helpers
+import { generateId } from "../utils/id";
 
 import { store } from "../store/store";
 
@@ -31,7 +35,7 @@ export function init(stackId: string): OscillatorProps {
             value: 80,
             modulator: null
         },
-        oscId: "generateId",
+        oscId: generateId("oscillator", store.getState()),
         stackId: stackId
     };
 }
@@ -42,7 +46,7 @@ export class Oscillator extends React.Component {
     }
 
     componentDidMount() {
-        console.log("osc props", this.props);
+        // console.log("osc props", this.props);
     }
 
     render() {
@@ -70,7 +74,7 @@ export class Oscillator extends React.Component {
     }
 
     updateOscillator(props) {
-        console.log("UPDATE_OSCILLATOR props", props);
+        // console.log("UPDATE_OSCILLATOR props", props);
         store.dispatch({
             type: "UPDATE_OSCILLATOR",
             payload: props
